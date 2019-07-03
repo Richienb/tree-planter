@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="theme-color" content="#3F51B5">
+
+    <title>Tree Planter</title>
+    <meta name="description" content="Leverages Ecosia to automatically plant real trees.">
+
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/3.0.0/material-components-web.min.css" integrity="sha256-sljrYCrrEK55ECAXF6gHxng8RLXHZYpsblwhH4P7bsM=" crossorigin="anonymous" />
+
+    <style>
+        body {
+            --mdc-theme-primary: #3f51b5;
+            --mdc-theme-secondary: #f44336;
+            background-color: #fafafa;
+        }
+        
+        body .ribbon {
+            top: 0;
+            z-index: -1;
+            background-color: var(--mdc-theme-primary, #6200ee);
+            width: 100%;
+            height: 10rem;
+            position: absolute;
+        }
+        
+        body .main-content {
+            background-color: white;
+            border-radius: 4px;
+            margin: 1.5rem;
+            padding: 2rem;
+            min-height: calc(100vh - 7rem);
+        }
+        
+        body .main-content .frame__box {
+            display: none;
+        }
+        
+        body .main-content .gen__threads-label {
+            margin-bottom: 0;
+        }
+        
+        body .main-content img {
+            max-width: 100%;
+        }
+        
+        body .main-content .mdc-button.mdc-button--raised {
+            background-color: var(--mdc-theme-secondary, #018786);
+        }
+        
+        body .main-content .theme-toggle {
+            position: absolute;
+            top: 0.5rem;
+            right: 3rem;
+        }
+        
+        body .main-content a {
+            color: var(--mdc-theme-primary, #6200ee);
+        }
+        
+        body .main-content::-moz-selection {
+            background-color: var(--mdc-theme-primary, #6200ee);
+            color: white;
+        }
+        
+        body .main-content::selection {
+            background-color: var(--mdc-theme-primary, #6200ee);
+            color: white;
+        }
+        
+        body .main-content #carbonads {
+            margin-bottom: 1rem;
+            float: right;
+            border-radius: 6px;
+            box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+            font-family: Roboto, sans-serif;
+            line-height: 28px;
+            padding: 8px;
+            box-sizing: border-box;
+            transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @media only screen and (max-width: 425px) {
+            body .main-content #carbonads {
+                width: 100%;
+            }
+        }
+        
+        body .main-content #carbonads:hover {
+            box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+        }
+        
+        body .main-content #carbonads .carbon-wrap .carbon-img > img {
+            margin-right: 9px;
+            float: left;
+        }
+        
+        @media only screen and (max-width: 400px) {
+            body .main-content #carbonads .carbon-wrap .carbon-img > img {
+                width: auto;
+                max-width: 130px;
+                height: 50px;
+            }
+        }
+        
+        body .main-content #carbonads .carbon-wrap .carbon-text {
+            color: #637381;
+            font-weight: 300;
+            display: block;
+            font-size: 12px;
+            line-height: 15.96px;
+            margin-bottom: 0;
+            margin-top: 8px;
+            text-decoration: none;
+        }
+        
+        body .main-content #carbonads .carbon-poweredby {
+            color: #c5cdd0;
+            font-size: 8px;
+            font-weight: 500;
+            line-height: 10px;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        
+        body .full-width {
+            width: 100%;
+        }
+        
+        body.setting--dark {
+            background-color: #121212 !important;
+            --mdc-theme-text-primary-on-background: white;
+            --mdc-theme-text-secondary-on-background: white;
+            --mdc-theme-text-icon-on-background: white;
+        }
+        
+        body.setting--dark::-webkit-scrollbar {
+            background-color: #424242;
+        }
+        
+        body.setting--dark .main-content {
+            color: white;
+            background-color: #212121;
+        }
+        
+        body.setting--dark .mdc-select__selected-text,
+        body.setting--dark .mdc-text-field__input,
+        body.setting--dark .mdc-floating-label,
+        body.setting--dark #carbonads .carbon-text {
+            color: white !important;
+        }
+        
+        body.setting--dark .mdc-notched-outline__leading,
+        body.setting--dark .mdc-notched-outline__notch,
+        body.setting--dark .mdc-notched-outline__trailing {
+            border-color: white !important;
+        }
+        
+        body.setting--dark a {
+            color: #5c6bc0;
+        }
+        
+        body.setting--dark::-moz-selection {
+            background-color: #c5cae9;
+            color: black;
+        }
+        
+        body.setting--dark::selection {
+            background-color: #c5cae9;
+            color: black;
+        }
+        
+        body.setting--animate-colours {
+            transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body.setting--animate-colours .main-content,
+        body.setting--animate-colours a,
+        body.setting--animate-colours::-moz-selection {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition-property: background-color, color;
+        }
+        
+        body.setting--animate-colours .main-content,
+        body.setting--animate-colours a,
+        body.setting--animate-colours::selection {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition-property: background-color, color;
+        }
+        
+        body::-webkit-scrollbar {
+            border-radius: 100px;
+            background-color: transparent;
+            width: 8px;
+            height: 8px;
+        }
+        
+        body::-webkit-scrollbar-button {
+            height: 0;
+            width: 0;
+        }
+        
+        body::-webkit-scrollbar-corner {
+            background-color: transparent;
+        }
+        
+        body::-webkit-scrollbar-thumb {
+            border-radius: 100px;
+            background-color: rgba(0, 0, 0, 0.2);
+            min-height: 28px;
+        }
+        
+        body::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        body::-webkit-scrollbar-thumb:active {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        body::-webkit-scrollbar-track {
+            background-clip: padding-box;
+            border-width: 0 0 0 4px;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+</head>
+
+<body>
+    <!-- https://richienb.mit-license.org/ -->
+    <div class="ribbon mdc-elevation--z4"></div>
+    <main class="main-content mdc-typography mdc-elevation--z8">
+        <script async src="https://cdn.carbonads.com/carbon.js?serve=CK7I6K3E&amp;placement=wwwrichie-bendallml" id="_carbonads_js"></script>
+        <button class="theme-toggle mdc-fab mdc-fab--mini" aria-label="Toggle theme" data-mdc-auto-init="MDCRipple">
+            <svg class="theme-toggle__svg mdc-fab__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="none" d="M0 0h24v24H0V0z" />
+                <path d="M11 7l-3.2 9h1.9l.7-2h3.2l.7 2h1.9L13 7h-2zm-.15 5.65L12 9l1.15 3.65h-2.3zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zm-2 5.79V18h-3.52L12 20.48 9.52 18H6v-3.52L3.52 12 6 9.52V6h3.52L12 3.52 14.48 6H18v3.52L20.48 12 18 14.48z" />
+            </svg>
+        </button>
+        <h1 class="mdc-typography--headline2">Tree planter</h1>
+        <p class="mdc-typography--body1">Leverages Ecosia to automatically plant real trees.</p>
+        <p class="gen__threads-label mdc-typography--body2">Search threads (higher = faster searching)</p>
+        <div class="gen__threads mdc-slider mdc-slider--discrete" tabindex="0" role="slider" aria-valuemin="1" aria-valuemax="16" aria-valuenow="4" aria-label="Select Value" data-mdc-auto-init="MDCSlider">
+            <div class="mdc-slider__track-container">
+                <div class="mdc-slider__track"></div>
+            </div>
+            <div class="mdc-slider__thumb-container">
+                <div class="mdc-slider__pin">
+                    <span class="mdc-slider__pin-value-marker"></span>
+                </div>
+                <svg class="mdc-slider__thumb" width="21" height="21">
+                    <circle cx="10.5" cy="10.5" r="7.875"></circle>
+                </svg>
+                <div class="mdc-slider__focus-ring"></div>
+            </div>
+        </div>
+        <br>
+        <button class="gen__start mdc-fab mdc-fab--extended" data-mdc-auto-init="MDCRipple">
+
+            <svg class="mdc-fab__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="none" d="M0 0h24v24H0V0z" />
+                <path d="M10 8.64L15.27 12 10 15.36V8.64M8 5v14l11-7L8 5z" />
+            </svg>
+            <span class="mdc-fab__label">Start planting</span>
+        </button>
+        <br>
+        <br>
+        <ul class="mdc-list mdc-list--two-line">
+            <li class="mdc-list-item" tabindex="0" data-mdc-auto-init="MDCRipple">
+                <svg class="mdc-list-item__graphic" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="none" d="M0 0h24v24H0V0z" />
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                </svg>
+                <span class="mdc-list-item__text">
+      <span class="mdc-list-item__primary-text">Searches made</span>
+                <span class="gen__searches mdc-list-item__secondary-text">0</span>
+                </span>
+            </li>
+            <li class="mdc-list-item" data-mdc-auto-init="MDCRipple">
+                <svg class="mdc-list-item__graphic" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M10,21V18H3L8,13H5L10,8H7L12,3L17,8H14L19,13H16L21,18H14V21H10Z" />
+                </svg>
+                <span class="mdc-list-item__text">
+      <span class="mdc-list-item__primary-text">Estimated trees planted</span>
+                <span class="gen__trees mdc-list-item__secondary-text">0</span>
+                </span>
+            </li>
+        </ul>
+        <div class="frame__box"></div>
+    </main>
+
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js" integrity="sha256-1eSvllkLdrfxD6G8RGF9h+mQuD93Af5+GdPBMNc7uMQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/3.0.0/material-components-web.min.js" integrity="sha256-EsosgypLTQhhyhYTy8y+WbACaQsmG2Tpvoq1186sISE=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+    <script>
+        // https://richienb.mit-license.org/
+        mdc.autoInit();
+        Array.prototype.cycle = function(str) {
+            var i = this.indexOf(str);
+            if (i === -1)
+                return undefined;
+            return this[(i + 1) % this.length];
+        };
+        var handleTheme = function() {
+            switch (localStorage.getItem("theme")) {
+                case "light":
+                    $(".theme-toggle__svg").html("<path fill=\"none\" d=\"M0 0h24v24H0V0z\"/><path d=\"M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zm-2 5.79V18h-3.52L12 20.48 9.52 18H6v-3.52L3.52 12 6 9.52V6h3.52L12 3.52 14.48 6H18v3.52L20.48 12 18 14.48zM12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z\"/><circle cx=\"12\" cy=\"12\" r=\"2.5\"/>");
+                    $("body").removeClass("setting--dark");
+                    break;
+                case "dark":
+                    $(".theme-toggle__svg").html("<path fill=\"none\" d=\"M0 0h24v24H0V0z\"/><path d=\"M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zm-2 5.79V18h-3.52L12 20.48 9.52 18H6v-3.52L3.52 12 6 9.52V6h3.52L12 3.52 14.48 6H18v3.52L20.48 12 18 14.48zM12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z\"/>");
+                    $("body").addClass("setting--dark");
+                    break;
+                default:
+                    $(".theme-toggle__svg").html("<path fill=\"none\" d=\"M0 0h24v24H0V0z\"/><path d=\"M11 7l-3.2 9h1.9l.7-2h3.2l.7 2h1.9L13 7h-2zm-.15 5.65L12 9l1.15 3.65h-2.3zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zm-2 5.79V18h-3.52L12 20.48 9.52 18H6v-3.52L3.52 12 6 9.52V6h3.52L12 3.52 14.48 6H18v3.52L20.48 12 18 14.48z\"/>");
+                    var hours = new Date().getHours();
+                    $("body").toggleClass("setting--dark", hours <= 6 ||
+                        hours >= 20 ||
+                        window.matchMedia("(prefers-color-scheme: dark)").matches ||
+                        window.matchMedia("(-ms-high-contrast: white-on-black)").matches);
+            }
+
+        };
+        if (["auto", "light", "dark"].indexOf(localStorage.getItem("theme")) === -1)
+            localStorage.setItem("theme", "auto");
+        handleTheme();
+        $("body").addClass("setting--animate-colours");
+        $(".theme-toggle").click(function() {
+            localStorage.setItem("theme", ["auto", "light", "dark"].cycle(localStorage.getItem("theme")));
+            handleTheme();
+        });
+        var started = false;
+        var searches = 0;
+        var loadSearch = function() {
+            var el = $("<iframe src=\"https://www.ecosia.org/search?q=srhusuhsfriwiriuheiuheuerhiuerhuireuhuhuierhuierihrehrehiuruhuieriuher\" frameborder=\"0\"></iframe>").appendTo(".frame__box");
+            el.on("load", function() {
+                searches++;
+                $(".gen__searches").text(searches);
+                $(".gen__trees").text(Math.floor(searches / 45));
+                el.remove();
+                if (started)
+                    loadSearch();
+            });
+        };
+        $(".gen__start").click(function() {
+            started = !started;
+            $(".gen__threads").get(0).MDCSlider.disabled = started;
+            if (started) {
+                var threads = $(".gen__threads").get(0).MDCSlider.value;
+                for (var i = 0; i < threads; i++) {
+                    if (window.CP.shouldStopExecution(0)) break;
+                    loadSearch();
+                }
+                window.CP.exitedLoop(0);
+                $(".gen__start .mdc-fab__icon").html("<path fill=\"none\" d=\"M0 0h24v24H0V0z\"/><path d=\"M16 8v8H8V8h8m2-2H6v12h12V6z\"/>");
+                $(".gen__start .mdc-fab__label").text("Stop planting");
+            } else {
+                $(".gen__start .mdc-fab__icon").html("<path fill=\"none\" d=\"M0 0h24v24H0V0z\"/><path d=\"M10 8.64L15.27 12 10 15.36V8.64M8 5v14l11-7L8 5z\"/>");
+                $(".gen__start .mdc-fab__label").text("Start planting");
+            }
+        });
+    </script>
+
+</body>
+
+</html>
