@@ -13,70 +13,42 @@
 
     <link rel="shortcut icon" href="favicon.ico">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/3.0.0/material-components-web.min.css" integrity="sha256-sljrYCrrEK55ECAXF6gHxng8RLXHZYpsblwhH4P7bsM=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/4.0.0/material-components-web.min.css" integrity="sha256-qXMsxdCTC8GWuxtVDeJoKEm3lyAzHEkv+4l8nfsVvuw=" crossorigin="anonymous" />
 
     <style>
         body {
             --mdc-theme-primary: #3f51b5;
             --mdc-theme-secondary: #f44336;
-            background-color: #fafafa;
+            background-image: url("https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
         }
         
-        body .ribbon {
-            top: 0;
-            z-index: -1;
-            background-color: var(--mdc-theme-primary, #6200ee);
-            width: 100%;
-            height: 10rem;
-            position: absolute;
+        body header {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding-top: 20px;
+            padding-left: 40px;
+            padding-bottom: 40px;
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
         }
         
-        body .main-content {
-            background-color: white;
-            border-radius: 4px;
-            margin: 1.5rem;
-            padding: 2rem;
-            min-height: calc(100vh - 7rem);
-        }
-        
-        body .main-content .frame__box {
-            display: none;
-        }
-        
-        body .main-content .gen__threads-label {
-            margin-bottom: 0;
-        }
-        
-        body .main-content img {
-            max-width: 100%;
-        }
-        
-        body .main-content .mdc-button.mdc-button--raised {
-            background-color: var(--mdc-theme-secondary, #018786);
-        }
-        
-        body .main-content .theme-toggle {
-            position: absolute;
-            top: 0.5rem;
-            right: 3rem;
-        }
-        
-        body .main-content a {
-            color: var(--mdc-theme-primary, #6200ee);
-        }
-        
-        body .main-content::-moz-selection {
-            background-color: var(--mdc-theme-primary, #6200ee);
+        body header .header__text {
+            font-family: "Patua One";
             color: white;
         }
         
-        body .main-content::selection {
-            background-color: var(--mdc-theme-primary, #6200ee);
-            color: white;
+        body header .theme-toggle {
+            float: right;
+            margin-right: 20px;
+            top: 35px;
         }
         
-        body .main-content #carbonads {
+        body header #carbonads {
             margin-bottom: 1rem;
+            margin-right: 1rem;
             float: right;
             border-radius: 6px;
             box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
@@ -85,32 +57,33 @@
             padding: 8px;
             box-sizing: border-box;
             transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: rgba(255, 255, 255, 0.7);
         }
         
         @media only screen and (max-width: 425px) {
-            body .main-content #carbonads {
+            body header #carbonads {
                 width: 100%;
             }
         }
         
-        body .main-content #carbonads:hover {
+        body header #carbonads:hover {
             box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
         }
         
-        body .main-content #carbonads .carbon-wrap .carbon-img > img {
+        body header #carbonads .carbon-wrap .carbon-img > img {
             margin-right: 9px;
             float: left;
         }
         
         @media only screen and (max-width: 400px) {
-            body .main-content #carbonads .carbon-wrap .carbon-img > img {
+            body header #carbonads .carbon-wrap .carbon-img > img {
                 width: auto;
                 max-width: 130px;
                 height: 50px;
             }
         }
         
-        body .main-content #carbonads .carbon-wrap .carbon-text {
+        body header #carbonads .carbon-wrap .carbon-text {
             color: #637381;
             font-weight: 300;
             display: block;
@@ -121,7 +94,7 @@
             text-decoration: none;
         }
         
-        body .main-content #carbonads .carbon-poweredby {
+        body header #carbonads .carbon-poweredby {
             color: #c5cdd0;
             font-size: 8px;
             font-weight: 500;
@@ -130,49 +103,20 @@
             text-decoration: none;
         }
         
-        body .full-width {
-            width: 100%;
+        body main {
+            margin: 40px;
+            padding: 40px;
+            background-color: white;
+            min-height: calc(100vh - 320px);
+            display: block !important;
         }
         
-        body.setting--dark {
-            background-color: #121212 !important;
-            --mdc-theme-text-primary-on-background: white;
-            --mdc-theme-text-secondary-on-background: white;
-            --mdc-theme-text-icon-on-background: white;
-        }
-        
-        body.setting--dark::-webkit-scrollbar {
-            background-color: #424242;
-        }
-        
-        body.setting--dark .main-content {
-            color: white;
-            background-color: #212121;
-        }
-        
-        body.setting--dark .mdc-select__selected-text,
-        body.setting--dark .mdc-text-field__input,
-        body.setting--dark .mdc-floating-label,
-        body.setting--dark #carbonads .carbon-text {
-            color: white !important;
-        }
-        
-        body.setting--dark .mdc-notched-outline__leading,
-        body.setting--dark .mdc-notched-outline__notch,
-        body.setting--dark .mdc-notched-outline__trailing {
-            border-color: white !important;
-        }
-        
-        body.setting--dark a {
-            color: #5c6bc0;
-        }
-        
-        body.setting--dark::-moz-selection {
+        body::-moz-selection {
             background-color: #c5cae9;
             color: black;
         }
         
-        body.setting--dark::selection {
+        body::selection {
             background-color: #c5cae9;
             color: black;
         }
@@ -181,14 +125,14 @@
             transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        body.setting--animate-colours .main-content,
+        body.setting--animate-colours main,
         body.setting--animate-colours a,
         body.setting--animate-colours::-moz-selection {
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             transition-property: background-color, color;
         }
         
-        body.setting--animate-colours .main-content,
+        body.setting--animate-colours main,
         body.setting--animate-colours a,
         body.setting--animate-colours::selection {
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -229,17 +173,36 @@
             background-clip: padding-box;
             border-width: 0 0 0 4px;
         }
+        
+        body.setting--dark {
+            background-color: #121212 !important;
+            --mdc-theme-text-primary-on-background: white;
+            --mdc-theme-text-secondary-on-background: white;
+            --mdc-theme-text-icon-on-background: white;
+        }
+        
+        body.setting--dark::-webkit-scrollbar {
+            background-color: #424242;
+        }
+        
+        body.setting--dark main {
+            color: white;
+            background-color: #212121;
+        }
+        
+        body.setting--dark main .frame__box {
+            display: none;
+        }
     </style>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link href="https://fonts.googleapis.com/css?family=Patua+One|Roboto:300,400,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
 
 </head>
 
 <body>
     <!-- https://richienb.mit-license.org/ -->
-    <div class="ribbon mdc-elevation--z4"></div>
-    <main class="main-content mdc-typography mdc-elevation--z8">
+    <header>
         <script async src="https://cdn.carbonads.com/carbon.js?serve=CK7I6K3E&amp;placement=wwwrichie-bendallml" id="_carbonads_js"></script>
         <button class="theme-toggle mdc-fab mdc-fab--mini" aria-label="Toggle theme" data-mdc-auto-init="MDCRipple">
             <svg class="theme-toggle__svg mdc-fab__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -247,8 +210,11 @@
                 <path d="M11 7l-3.2 9h1.9l.7-2h3.2l.7 2h1.9L13 7h-2zm-.15 5.65L12 9l1.15 3.65h-2.3zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zm-2 5.79V18h-3.52L12 20.48 9.52 18H6v-3.52L3.52 12 6 9.52V6h3.52L12 3.52 14.48 6H18v3.52L20.48 12 18 14.48z" />
             </svg>
         </button>
-        <h1 class="mdc-typography--headline2">Tree planter</h1>
-        <p class="mdc-typography--body1">Leverages Ecosia to automatically plant real trees.</p>
+        <h1 class="header__text mdc-typography--headline3">We love trees.</h1>
+        <h2 class="header__text mdc-typography--headline4">Let's plant some more</h2>
+
+    </header>
+    <main class="mdc-card">
         <p class="gen__threads-label mdc-typography--body2">Search threads (higher = faster searching)</p>
         <div class="gen__threads mdc-slider mdc-slider--discrete" tabindex="0" role="slider" aria-valuemin="1" aria-valuemax="16" aria-valuenow="4" aria-label="Select Value" data-mdc-auto-init="MDCSlider">
             <div class="mdc-slider__track-container">
@@ -300,9 +266,11 @@
     </main>
 
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js" integrity="sha256-1eSvllkLdrfxD6G8RGF9h+mQuD93Af5+GdPBMNc7uMQ=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/3.0.0/material-components-web.min.js" integrity="sha256-EsosgypLTQhhyhYTy8y+WbACaQsmG2Tpvoq1186sISE=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/4.0.0/material-components-web.min.js" integrity="sha256-50zE5E7A9cvQj1Gn3yUZDKAQProHvRxbJzLfa1knWIc=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js" integrity="sha256-VeNaFBVDhoX3H+gJ37DpT/nTuZTdjYro9yBruHjVmoQ=" crossorigin="anonymous"></script>
     <script>
+        // https://richienb.mit-license.org/
         // https://richienb.mit-license.org/
         mdc.autoInit();
         Array.prototype.cycle = function(str) {
@@ -346,7 +314,7 @@
             el.on("load", function() {
                 searches++;
                 $(".gen__searches").text(searches);
-                $(".gen__trees").text(Math.floor(searches / 45));
+                $(".gen__trees").text(_.round(searches / 45, 2));
                 el.remove();
                 if (started)
                     loadSearch();
@@ -358,8 +326,10 @@
             if (started) {
                 var threads = $(".gen__threads").get(0).MDCSlider.value;
                 for (var i = 0; i < threads; i++) {
+                    if (window.CP.shouldStopExecution(0)) break;
                     loadSearch();
                 }
+                window.CP.exitedLoop(0);
                 $(".gen__start .mdc-fab__icon").html("<path fill=\"none\" d=\"M0 0h24v24H0V0z\"/><path d=\"M16 8v8H8V8h8m2-2H6v12h12V6z\"/>");
                 $(".gen__start .mdc-fab__label").text("Stop planting");
             } else {
