@@ -271,7 +271,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js" integrity="sha256-VeNaFBVDhoX3H+gJ37DpT/nTuZTdjYro9yBruHjVmoQ=" crossorigin="anonymous"></script>
     <script>
         // https://richienb.mit-license.org/
-        // https://richienb.mit-license.org/
         mdc.autoInit();
         Array.prototype.cycle = function(str) {
             var i = this.indexOf(str);
@@ -297,7 +296,6 @@
                         window.matchMedia("(prefers-color-scheme: dark)").matches ||
                         window.matchMedia("(-ms-high-contrast: white-on-black)").matches);
             }
-
         };
         if (["auto", "light", "dark"].indexOf(localStorage.getItem("theme")) === -1)
             localStorage.setItem("theme", "auto");
@@ -325,11 +323,8 @@
             $(".gen__threads").get(0).MDCSlider.disabled = started;
             if (started) {
                 var threads = $(".gen__threads").get(0).MDCSlider.value;
-                for (var i = 0; i < threads; i++) {
-                    if (window.CP.shouldStopExecution(0)) break;
+                for (var i = 0; i < threads; i++)
                     loadSearch();
-                }
-                window.CP.exitedLoop(0);
                 $(".gen__start .mdc-fab__icon").html("<path fill=\"none\" d=\"M0 0h24v24H0V0z\"/><path d=\"M16 8v8H8V8h8m2-2H6v12h12V6z\"/>");
                 $(".gen__start .mdc-fab__label").text("Stop planting");
             } else {
